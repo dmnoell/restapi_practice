@@ -75,13 +75,16 @@ class Pokemon (Resource):
         db.session.commit()
         return "sucessful delete", 200
 
-
+class Greeting (Resource):
+    def get (self):
+        return " search /pokemon to get a list of pokemon"
 
 
 
 
 api.add_resource(Pokemon, '/pokemon/<int:pokemon_id>')
 api.add_resource(AllPokemon, '/pokemon')
+api.add_resource(Greeting, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
