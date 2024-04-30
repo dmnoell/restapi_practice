@@ -32,15 +32,15 @@ class AllPokemon (Resource):
         pokelist = {}
         for poke in pokemon:
             pokelist[poke.id] = {'name': poke.name, 'type': poke.type}
-        return pokelist
+        return pokelist, 200
 
 class Pokemon (Resource):
     @marshal_with(argument_values)
     def get(self, pokemon_id):
         pokemon = PokeModel.query.filter_by(id=pokemon_id).first()
         if not pokemon:
-            abort(409, message='no pokemon with that id')
-        return pokemon
+            abort(404, message='no pokemon with that id')
+        return pokemon, 200
 
     @marshal_with(argument_values)    
     def post(self, pokemon_id):
@@ -64,7 +64,7 @@ class Pokemon (Resource):
         if args['type']:
             pokemon.type = args['type']
         db.session.commit()
-        return pokemon
+        return pokemon, 200
     
     @marshal_with(argument_values)
     def delete(self, pokemon_id):
@@ -77,7 +77,7 @@ class Pokemon (Resource):
 
 class Greeting (Resource):
     def get (self):
-        return " search /pokemon to get a list of pokemon"
+        return " search /pokemon to get a list of pokemon", 200
 
 
 
@@ -87,5 +87,5 @@ api.add_resource(AllPokemon, '/pokemon')
 api.add_resource(Greeting, '/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
